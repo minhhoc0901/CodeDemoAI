@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <title>YouTube Recommendation System</title>
+</head>
+<body>
+    <header>
+        <h1>YouTube Recommendation System</h1>
+        <form method="POST">
+            <input type="text" name="query" placeholder="Tìm kiếm video..." required>
+            <button type="submit">Tìm kiếm</button>
+        </form>
+    </header>
+    
+    <main>
+        <section class="video-list">
+            <h2>Video tìm kiếm:</h2>
+            <ul>
+                {% if videos %}
+                    {% for video in videos %}
+                        <li>
+                            <img src="{{ video.thumbnail }}" alt="{{ video.title }}" width="200">
+                            <p><strong>{{ video.title }}</strong></p>
+                            <p>{{ video.description }}</p>
+                            <a href="?video_id={{ video.videoId }}">Xem video</a>
+                        </li>
+                    {% endfor %}
+                {% else %}
+                    <p>Không có video nào được tìm thấy.</p>
+                {% endif %}
+            </ul>
+        </section>
+        
+        <section class="recommended-videos">
+            <h2>Video gợi ý:</h2>
+            <ul>
+                {% if recommended_videos %}
+                    {% for video in recommended_videos %}
+                        <li>
+                            <img src="{{ video.thumbnail }}" alt="{{ video.title }}" width="200">
+                            <p><strong>{{ video.title }}</strong></p>
+                            <p>{{ video.description }}</p>
+                            <a href="?video_id={{ video.videoId }}">Xem video</a>
+                        </li>
+                    {% endfor %}
+                {% else %}
+                    <p>Không có video nào được gợi ý.</p>
+                {% endif %}
+            </ul>
+        </section>
+
+        {% if selected_video_id %}
+        <section class="video-player">
+            <h2>Xem video:</h2>
+            <iframe width="560" height="315" src="https://www.youtube.com/embed/{{ selected_video_id }}" frameborder="0" allowfullscreen></iframe>
+        </section>
+        {% endif %}
+    </main>
+
+    <footer>
+        <p>&copy; 2024 Hệ thống gợi ý video.</p>
+    </footer>
+</body>
+</html>
